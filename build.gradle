@@ -44,5 +44,7 @@ dependencies {
     compile('com.h2database:h2') // 메모리형 관계형 DB, app을 재시작할때마다 초기화 된다
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compile('org.springframework.boot:spring-boot-starter-mustache')
+    compile('org.springframework.boot:spring-boot-starter-oauth2-client')
+    compile('org.springframework.session:spring-session-jdbc')
 }
 //dependencies는 프로젝트 개발에 필요한 의존성들을 선언하는 곳이다.

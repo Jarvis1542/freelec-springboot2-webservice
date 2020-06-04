@@ -1,14 +1,16 @@
 package com.jojoldu.book.springboot.springboot.web;
 
+import com.jojoldu.book.springboot.springboot.config.auth.LoginUser;
+import com.jojoldu.book.springboot.springboot.config.auth.dto.SessionUser;
 import com.jojoldu.book.springboot.springboot.service.PostsService;
 import com.jojoldu.book.springboot.springboot.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
@@ -17,8 +19,12 @@ public class IndexController {
     private final PostsService postsService;
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model, @LoginUser SessionUser user){
         model.addAttribute("posts", postsService.findAllDesc());
+        // SessionUser user = (SessionUser) httpSession.getAttribute("user"); // CustomOAuth2UserService에서 로그인 성공 시 SessionUser에 저장
+        if(user != null){
+            model.addAttribute("userName", user.getName()); // 세션에 저장된 값이 있을때만 model에 userName으로 등록
+        }
         return "index";
     }
 

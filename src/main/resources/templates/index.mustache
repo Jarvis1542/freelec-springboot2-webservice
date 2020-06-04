@@ -4,29 +4,39 @@
     <div class="row">
         <div class="col-md-6">
             <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
+            {{#userName}} <!-- if문(if( userName != null))을 제공하지 않음, 그래서 항상 최종값을 넘겨줘야함 -->
+                Logged in as : <span id="user">{{userName}}</span> <!-- 여기서 userName을 노출 -->
+                <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+                <!-- 스프링 시큐리티에서 기본적으로 제공하는 로그아웃URL -->
+            {{/userName}} <!-- logout계속 => 별도로 URL에 해당하는 컨트롤러 만들필요 없음 -->
+            {{^userName}} <!-- 머스테치에 해당 값이 없을경우 ^사용, userName 값이 없다면 Google Login을 노출 -->
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>
+            {{/userName}}
+
         </div>
     </div>
+    <br>
+    <!-- 목록 출력 영역 -->
+    <table class="table table-horizontal" table-border>
+        <thead class="thead-strong">
+        <tr>
+            <th>게시글번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>수정일</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        {{#posts}} <!--posts 리스트 들고오기(for문과 비슷)-->
+        <tr>
+            <td>{{id}}</td>
+            <td><a href="/posts/update/{{id}}">{{title}}</a></td>
+            <td>{{author}}</td>
+            <td>{{modifiedDate}}</td>
+        </tr>
+        {{/posts}}
+        </tbody>
+    </table>
 </div>
-<br>
-<!-- 목록 출력 영역 -->
-<table class="table table-horizontal" table-border>
-    <thead class="thead-strong">
-    <tr>
-        <th>게시글번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>수정일</th>
-    </tr>
-    </thead>
-    <tbody id="tbody">
-    {{#posts}} <!--posts 리스트 들고오기(for문과 비슷)-->
-    <tr>
-        <td>{{id}}</td>
-        <td><a href="/posts/update/{{id}}">{{title}}</a></td>
-        <td>{{author}}</td>
-        <td>{{modifiedDate}}</td>
-    </tr>
-    {{/posts}}
-    </tbody>
-</table>
 {{>layout/footer}}
